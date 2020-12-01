@@ -95,8 +95,11 @@ valAug.mean = mean
 
 # load the ResNet-50 network, ensuring the head FC layer sets are left
 # off
-baseModel = ResNet50(weights="imagenet", include_top=False,
-	input_tensor=Input(shape=(224, 224, 3)))
+
+# baseModel = ResNet50(weights="imagenet", include_top=False,
+# 	input_tensor=Input(shape=(224, 224, 3)))
+
+headModel = Sequential()
 # construct the head of the model that will be placed on top of the
 # the base model
 headModel = baseModel.output
