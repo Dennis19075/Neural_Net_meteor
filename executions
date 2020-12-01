@@ -1,0 +1,39 @@
+	Create an env or install in your machine
+		python3 -m venv myenv
+	and then use it (script for Windows)
+		myenv\Scripts\activate.bat
+	or  use this (script for Unix)
+		source myenv/bin/activate
+	
+	Libraries
+	- tensorflow
+	- open cv
+	- keras
+	- numpy
+	- pickle
+	- argparse
+	
+	---------Script to test it
+	You can run this only if you put a example clip
+	in the folder example_clips
+
+	output is just for save the video with the prediction dont worry about it for now
+
+python app/predict.py --model model/activity.model \
+	--label-bin model/lb.pickle \
+	--output output/meteorite_1frame.avi \
+	--size 1 \
+	--input example_clips/test_2.mp4 
+
+    ---------Script to train it
+
+    python app/training.py --dataset data --model model/activity.model \
+	--label-bin model/lb.pickle --epochs 13
+
+The plot.png represents the evolution of the train
+and the validation later. All of this with 13 epochs
+285 meteorites and 317 no_meteorites. 44.53% of acurracy 
+
+Note: This days I will make a better README.
+
+	
