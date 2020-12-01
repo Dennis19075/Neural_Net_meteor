@@ -69,10 +69,10 @@ labels = np.array(labels)
 # perform one-hot encoding on the labels
 lb = LabelBinarizer()
 labels = lb.fit_transform(labels)
-# partition the data into training and testing splits using 75% of
-# the data for training and the remaining 25% for testing
+# partition the data into training and testing splits using 80% of
+# the data for training and the remaining 20% for testing
 (trainX, testX, trainY, testY) = train_test_split(data, labels,
-	test_size=0.25, stratify=labels, random_state=42)
+	test_size=0.20, stratify=labels, random_state=42)
 
 # initialize the training data augmentation object
 trainAug = ImageDataGenerator(
