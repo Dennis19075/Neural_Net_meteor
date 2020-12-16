@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use("Agg")
 # import the necessary packages
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.layers import AveragePooling2D
+from tensorflow.keras.layers import AveragePooling2D,MaxPooling2D, Conv2D
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
@@ -64,15 +64,16 @@ for imagePath in imagePaths:
 	data.append(image)
 	labels.append(label)
 # convert the data and labels to NumPy arrays
+print("Input Data Length ", len(data))
 data = np.array(data)
 labels = np.array(labels)
 # perform one-hot encoding on the labels
 lb = LabelBinarizer()
 labels = lb.fit_transform(labels)
-# partition the data into training and testing splits using 75% of
-# the data for training and the remaining 25% for testing
+# partition the data into training and testing splits using 80% of
+# the data for training and the remaining 20% for testing
 (trainX, testX, trainY, testY) = train_test_split(data, labels,
-	test_size=0.25, stratify=labels, random_state=42)
+	test_size=0.20, stratify=labels, random_state=42)
 
 # initialize the training data augmentation object
 trainAug = ImageDataGenerator(
@@ -95,16 +96,19 @@ valAug.mean = mean
 
 # load the ResNet-50 network, ensuring the head FC layer sets are left
 # off
+
 baseModel = ResNet50(weights="imagenet", include_top=False,
 	input_tensor=Input(shape=(224, 224, 3)))
+
 # construct the head of the model that will be placed on top of the
 # the base model
 headModel = baseModel.output
-headModel = AveragePooling2D(pool_size=(7, 7))(headModel)
+headModel = AveragePooling2D(pool_size=(3, 3))(headModel)
 headModel = Flatten(name="flatten")(headModel)
 headModel = Dense(512, activation="relu")(headModel)
 headModel = Dropout(0.5)(headModel)
-headModel = Dense(len(lb.classes_), activation="softmax")(headModel)
+# headModel = MaxPooling2D(512, pool_size=(2,2))(headModel)
+headModel = Dense(len(lb.classes_), activation="sigmoid")(headModel)
 # place the head FC model on top of the base model (this will become
 # the actual model we will train)
 model = Model(inputs=baseModel.input, outputs=headModel)

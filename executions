@@ -23,12 +23,12 @@ python app/predict.py --model model/activity.model \
 	--label-bin model/lb.pickle \
 	--output output/meteorite_1frame.avi \
 	--size 1 \
-	--input example_clips/test_2.mp4 
+	--input ../example_clips/test_0.mp4 
 
     ---------Script to train it
 
-    python app/training.py --dataset data --model model/activity.model \
-	--label-bin model/lb.pickle --epochs 13
+    python app/training.py --dataset ../data --model model/activity.model \
+	--label-bin model/lb.pickle --epochs 5
 
 The plot.png represents the evolution of the train
 and the validation later. All of this with 13 epochs
