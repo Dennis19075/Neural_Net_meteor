@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use("Agg")
 # import the necessary packages
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.layers import AveragePooling2D
+from tensorflow.keras.layers import AveragePooling2D,MaxPooling2D, Conv2D
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
@@ -64,6 +64,7 @@ for imagePath in imagePaths:
 	data.append(image)
 	labels.append(label)
 # convert the data and labels to NumPy arrays
+print("Input Data Length ", len(data))
 data = np.array(data)
 labels = np.array(labels)
 # perform one-hot encoding on the labels
@@ -102,11 +103,12 @@ baseModel = ResNet50(weights="imagenet", include_top=False,
 # construct the head of the model that will be placed on top of the
 # the base model
 headModel = baseModel.output
-headModel = AveragePooling2D(pool_size=(7, 7))(headModel)
+headModel = AveragePooling2D(pool_size=(3, 3))(headModel)
 headModel = Flatten(name="flatten")(headModel)
 headModel = Dense(512, activation="relu")(headModel)
 headModel = Dropout(0.5)(headModel)
-headModel = Dense(len(lb.classes_), activation="softmax")(headModel)
+# headModel = MaxPooling2D(512, pool_size=(2,2))(headModel)
+headModel = Dense(len(lb.classes_), activation="sigmoid")(headModel)
 # place the head FC model on top of the base model (this will become
 # the actual model we will train)
 model = Model(inputs=baseModel.input, outputs=headModel)

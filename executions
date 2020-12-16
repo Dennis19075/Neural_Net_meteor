@@ -28,7 +28,7 @@ python app/predict.py --model model/activity.model \
     ---------Script to train it
 
     python app/training.py --dataset ../data --model model/activity.model \
-	--label-bin model/lb.pickle --epochs 13
+	--label-bin model/lb.pickle --epochs 5
 
 The plot.png represents the evolution of the train
 and the validation later. All of this with 13 epochs
